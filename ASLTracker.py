@@ -20,9 +20,9 @@ counter = 0
 
 labels = ["A","B","C"]
 
-
+#for printing the input text
 letterList = []
-printedString = "Test"
+printedString = ""
 
 #Quit Key
 def quit_key_pressed():
@@ -38,13 +38,12 @@ def quit_key_pressed():
 
 def Create_Printed_String(char):
     global letterList, printedString
-    if labels[index] == char:
-            letterList.append(labels[index])
-            cv2.putText(imgOutput, letterList[0], (50, 100), cv2.FONT_HERSHEY_DUPLEX,0.9,(255,255,255),1)    
-                
-            if letterList.count(char) > 25:
-                printedString = printedString + char
-                letterList = []
+
+    letterList.append(labels[index])    
+        
+    if letterList.count(char) > 25:
+        printedString = printedString + char
+        letterList = []
 
 while True:
     success, img = cap.read()
@@ -88,39 +87,25 @@ while True:
         cv2.putText(imgOutput, labels[index],(x,y-20), cv2.FONT_HERSHEY_DUPLEX,2,(255,0,255),2)
         #cv2.rectangle(imgOutput,(x-offset,y-offset), (x+w+offset,y+h+offset), (255,0,255),4) rectangle around hand
 
-        Create_Printed_String(labels[index])
-
-
-        # if labels[index] == "A":
-        #     letterList.append(labels[index])
-        #     cv2.putText(imgOutput, letterList[0], (50, 100), cv2.FONT_HERSHEY_DUPLEX,0.9,(255,255,255),1)    
-                
-        #     if letterList.count("A") > 25:
-        #         printedString = printedString + "A"
-        #         letterList = []
-
-        cv2.putText(imgOutput, printedString, (50, 50), cv2.FONT_HERSHEY_DUPLEX,0.9,(255,255,255),1)        
+        Create_Printed_String(labels[index])     
 
         cv2.imshow("ImageCrop",imgCrop)
         cv2.imshow("ImageWhite",imgWhite)
-
-
-
-
-
-        #Drawing the creator code
-        CreatorText = "Created by Jeremy Orr"
-        #cv2.rectangle(imgOutput, (0,400), (50,460), (0, 255, 0), thickness=10)
-        cv2.putText(imgOutput, CreatorText, (0, 475), cv2.FONT_HERSHEY_DUPLEX,0.9,(255,255,255),1)        
-
-
-
 
         #Exit key code
         if quit_key_pressed():
             break
 
 
+
+    #Printing the string
+    cv2.putText(imgOutput, printedString, (50, 50), cv2.FONT_HERSHEY_DUPLEX,0.9,(255,255,255),1) 
+    
+    #Drawing the creator code
+    CreatorText = "Created by Jeremy Orr"
+    #cv2.rectangle(imgOutput, (0,400), (50,460), (0, 255, 0), thickness=10)
+    cv2.putText(imgOutput, CreatorText, (0, 475), cv2.FONT_HERSHEY_DUPLEX,0.9,(255,255,255),1) 
+    
     cv2.imshow("Image",imgOutput) #Show new image without backend.
     cv2.waitKey(1)
 
