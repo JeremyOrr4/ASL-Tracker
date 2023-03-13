@@ -15,9 +15,6 @@ classifier = Classifier("Model/keras_model.h5", "Model/labels.txt")
 offset = 20 #Create offset for smaller box
 imgSize = 300
 
-folder="Data/C"
-counter = 0
-
 labels = ["A","B","C"]
 
 #for printing the input text
@@ -80,7 +77,7 @@ while True:
 
         aspectRatio = h/w
         
-        if aspectRatio >1:
+        if aspectRatio > 1:
             k = imgSize/h
             wCal = math.ceil(k*w)
             imgResize = cv2.resize(imgCrop,(wCal,imgSize))
@@ -101,7 +98,7 @@ while True:
             
             prediction, index = classifier.getPrediction(imgWhite, draw=True)
         
-        cv2.putText(imgOutput, labels[index],(x,y-20), cv2.FONT_HERSHEY_DUPLEX,2,(255,0,255),2)
+        cv2.putText(imgOutput, labels[index],(x+26,y-20), cv2.FONT_HERSHEY_DUPLEX,2,(0,0,255),2)
         #cv2.rectangle(imgOutput,(x-offset,y-offset), (x+w+offset,y+h+offset), (255,0,255),4) rectangle around hand
 
         Create_Printed_String(labels[index])     
