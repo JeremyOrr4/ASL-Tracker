@@ -1,3 +1,18 @@
 March 11, 2023
 -added a quit key and my name to the bottom left. GOing to add a rectangle around my name.
 -created the name in the right palce
+
+Next Steps:
+-Created a list to store the words. When pressed add the word to the list
+-Implemnt when you delete a word (d), save (s), Output work to file/speech (spacebar)
+
+Make it so if the index has been repeated x times, store in a list, make a null that has no adding to a list (Exteneded hand facing)
+
+-Added function so text is added to the string
+
+MArch 12 2023
+-I want to create a simple layout. I also want to add a null gesture.
+-Adding a null gesture means that I have to finish and come up with every single thing I want to add. Requires research and a list.
+
+-Fixed UI
+-Added so when they go off the screen with text it creates a new screen.

@@ -23,6 +23,9 @@ labels = ["A","B","C"]
 #for printing the input text
 letterList = []
 printedString = ""
+appenedPrintedString = ""
+
+CreatorText = "ASL to Speech & Text      Jeremy Orr"
 
 #Quit Key
 def quit_key_pressed():
@@ -37,13 +40,26 @@ def quit_key_pressed():
 
 
 def Create_Printed_String(char):
-    global letterList, printedString
+    global letterList, printedString, appenedPrintedString
 
-    letterList.append(labels[index])    
-        
-    if letterList.count(char) > 25:
-        printedString = printedString + char
-        letterList = []
+    if len(printedString) < 22:
+        letterList.append(labels[index])    
+            
+        if letterList.count(char) > 22:
+            printedString = printedString + char
+            letterList = []
+
+            if len(printedString) == 22:
+                LastCharOfPrintedString = printedString[-1]
+                appenedPrintedString = LastCharOfPrintedString
+            
+
+    else:
+        letterList.append(labels[index])     
+
+        if letterList.count(char) > 22:
+            appenedPrintedString = appenedPrintedString + char
+            letterList = [] 
 
 while True:
     success, img = cap.read()
@@ -63,6 +79,7 @@ while True:
         imgCropShape = imgCrop.shape
 
         aspectRatio = h/w
+        
         if aspectRatio >1:
             k = imgSize/h
             wCal = math.ceil(k*w)
@@ -98,13 +115,20 @@ while True:
 
 
 
-    #Printing the string
-    cv2.putText(imgOutput, printedString, (50, 50), cv2.FONT_HERSHEY_DUPLEX,0.9,(255,255,255),1) 
+    #Top section
+    cv2.rectangle(imgOutput, (0,0), (750,40), (0,0,0), -1)
+
+    cv2.putText(imgOutput, CreatorText, (30, 30), cv2.FONT_HERSHEY_DUPLEX,0.9,(255,255,255),1) 
     
-    #Drawing the creator code
-    CreatorText = "Created by Jeremy Orr"
-    #cv2.rectangle(imgOutput, (0,400), (50,460), (0, 255, 0), thickness=10)
-    cv2.putText(imgOutput, CreatorText, (0, 475), cv2.FONT_HERSHEY_DUPLEX,0.9,(255,255,255),1) 
+    #Drawing output box
+    #Createing the Box for the output text
+    cv2.rectangle(imgOutput, (0,438), (750,600), (0,0,0), -1)
+
+    if len(printedString) < 22:
+        cv2.putText(imgOutput, printedString, (0, 475), cv2.FONT_HERSHEY_DUPLEX,1.5,(255,255,255),2) 
+
+    else:
+        cv2.putText(imgOutput, appenedPrintedString, (0, 475), cv2.FONT_HERSHEY_DUPLEX,1.5,(255,255,255),2) 
     
     cv2.imshow("Image",imgOutput) #Show new image without backend.
     cv2.waitKey(1)
