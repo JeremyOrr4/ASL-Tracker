@@ -16,3 +16,7 @@ MArch 12 2023
 
 -Fixed UI
 -Added so when they go off the screen with text it creates a new screen.
+
+Added delete
+
+Next Steps, create a variable that is the length of the first and second strings
