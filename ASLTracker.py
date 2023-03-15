@@ -18,9 +18,13 @@ imgSize = 300
 labels = ["A","B","C"]
 
 #for printing the input text
+global StringMaxLength, CyclesToRegisterInput
+
 letterList = []
 printedString = ""
 appenedPrintedString = ""
+StringMaxLength = 22
+CyclesToRegisterInput = 22
 
 CreatorText = "ASL to Speech & Text      Jeremy Orr"
 
@@ -42,17 +46,17 @@ def quit_key_pressed():
 def Create_Printed_String(char):
     global letterList, printedString, appenedPrintedString
     
-    if len(printedString) < 22:
+    if len(printedString) < StringMaxLength:
         letterList.append(labels[index])    
 
-        if char == "A" and letterList.count("A") > 22:
+        if char == "Delete" and letterList.count("Delete") > CyclesToRegisterInput:
             DeleteChar(True)
 
-        if letterList.count(char) > 22: #Should be 22
+        if letterList.count(char) > CyclesToRegisterInput:
             printedString = printedString + char
             letterList = []
 
-            if len(printedString) == 22:
+            if len(printedString) == StringMaxLength:
                 LastCharOfPrintedString = printedString[-1]
                 appenedPrintedString = LastCharOfPrintedString      
             
@@ -60,10 +64,10 @@ def Create_Printed_String(char):
     else:
         letterList.append(labels[index])     
 
-        if char == "A" and letterList.count("A") > 22: 
+        if char == "Delete" and letterList.count("Delete") > CyclesToRegisterInput: 
             DeleteChar(False)
 
-        if letterList.count(char) > 22:
+        if letterList.count(char) > CyclesToRegisterInput:
             appenedPrintedString = appenedPrintedString + char
             letterList = [] 
 
@@ -161,7 +165,7 @@ while True:
     #Createing the Box for the output text
     cv2.rectangle(imgOutput, (0,438), (750,600), (0,0,0), -1)
 
-    if len(printedString) < 22:
+    if len(printedString) < StringMaxLength:
         cv2.putText(imgOutput, printedString, (0, 475), cv2.FONT_HERSHEY_DUPLEX,1.5,(255,255,255),2) 
 
     else:
