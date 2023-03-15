@@ -41,7 +41,7 @@ def quit_key_pressed():
 
 def Create_Printed_String(char):
     global letterList, printedString, appenedPrintedString
-
+    
     if len(printedString) < 22:
         letterList.append(labels[index])    
 
@@ -106,7 +106,14 @@ while True:
         if aspectRatio > 1:
             k = imgSize/h
             wCal = math.ceil(k*w)
-            imgResize = cv2.resize(imgCrop,(wCal,imgSize))
+
+            #Fix off Screen Error
+            if imgCrop.size > 0:
+                imgResize = cv2.resize(imgCrop, (wCal, imgSize))
+            else:
+                continue
+
+            #imgResize = cv2.resize(imgCrop,(wCal,imgSize))
             imgResizeShape = imgResize.shape
             wGap = math.ceil((300-wCal)/2)
             imgWhite[:, wGap:wCal+wGap] = imgResize #putting white as backgound
@@ -117,7 +124,14 @@ while True:
         else:
             k = imgSize/w
             hCal = math.ceil(k*h)
-            imgResize = cv2.resize(imgCrop,(imgSize,hCal))
+            
+            #Fix off Screen Error
+            if imgCrop.size > 0:
+                imgResize = cv2.resize(imgCrop, (imgSize, hCal))
+            else:
+                continue
+
+            #imgResize = cv2.resize(imgCrop,(imgSize,hCal))
             imgResizeShape = imgResize.shape
             hGap = math.ceil((imgSize-hCal)/2)
             imgWhite[hGap:hCal+hGap, :] = imgResize #putting white as backgound
