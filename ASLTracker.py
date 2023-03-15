@@ -23,77 +23,81 @@ global StringMaxLength, CyclesToRegisterInput
 letterList = []
 printedString = ""
 appenedPrintedString = ""
-StringMaxLength = 22
+StringMaxLength = 21
 CyclesToRegisterInput = 22
 
 CreatorText = "ASL to Speech & Text      Jeremy Orr"
 
 #Text to speech variables
 
+#User Functions
+class UserFunctions():
 
-#Quit Key
-def quit_key_pressed():
-    # Wait for a key press
-    key = cv2.waitKey(1) & 0xFF
+    #Quit Key
+    def quit_key_pressed(self):
+        # Wait for a key press
+        key = cv2.waitKey(1) & 0xFF
 
-    # If the "q" key was pressed, return True
-    if key == ord('q'):
-        return True
+        # If the "q" key was pressed, return True
+        if key == ord('q'):
+            return True
 
-    return False
+        return False
 
 
-def Create_Printed_String(char):
-    global letterList, printedString, appenedPrintedString
-    
-    if len(printedString) < StringMaxLength:
-        letterList.append(labels[index])    
+    def Create_Printed_String(self,char):
+        global letterList, printedString, appenedPrintedString
+        
+        if len(printedString) < StringMaxLength:
+            letterList.append(labels[index])    
 
-        if char == "Delete" and letterList.count("Delete") > CyclesToRegisterInput:
-            DeleteChar(True)
+            if char == "A" and letterList.count("A") > CyclesToRegisterInput:
+                self.DeleteChar(True)
 
-        if letterList.count(char) > CyclesToRegisterInput:
-            printedString = printedString + char
+            if letterList.count(char) > CyclesToRegisterInput:
+                printedString = printedString + char
+                letterList = []
+
+                if len(printedString) == StringMaxLength:
+                    LastCharOfPrintedString = printedString[-1]
+                    appenedPrintedString = LastCharOfPrintedString      
+                
+
+        else:
+            letterList.append(labels[index])     
+
+            if char == "A" and letterList.count("A") > CyclesToRegisterInput: 
+                self.DeleteChar(False)
+
+            if letterList.count(char) > CyclesToRegisterInput:
+                appenedPrintedString = appenedPrintedString + char
+                letterList = [] 
+
+
+    def DeleteChar(self,firstBlock):
+        global letterList, printedString, appenedPrintedString
+        
+        if firstBlock == True:
+            printedString = printedString[:-1]
+            letterList = []
+        
+        elif firstBlock == False:
+            if len(appenedPrintedString) == 0:
+                self.DeleteChar(True)
+
+            appenedPrintedString = appenedPrintedString[:-1]
             letterList = []
 
-            if len(printedString) == StringMaxLength:
-                LastCharOfPrintedString = printedString[-1]
-                appenedPrintedString = LastCharOfPrintedString      
-            
+#User Functions
 
-    else:
-        letterList.append(labels[index])     
-
-        if char == "Delete" and letterList.count("Delete") > CyclesToRegisterInput: 
-            DeleteChar(False)
-
-        if letterList.count(char) > CyclesToRegisterInput:
-            appenedPrintedString = appenedPrintedString + char
-            letterList = [] 
-
-
-def DeleteChar(firstBlock):
-    global letterList, printedString, appenedPrintedString
-    
-    if firstBlock == True:
-        printedString = printedString[:-1]
-        letterList = []
-    
-    elif firstBlock == False:
-        if len(appenedPrintedString) == 0:
-            DeleteChar(True)
-
-        appenedPrintedString = appenedPrintedString[:-1]
-        letterList = []
-
-
+User = UserFunctions()
 
 while True:
     success, img = cap.read()
     imgOutput = img.copy()
     hands, img = detector.findHands(img)
 
-    if quit_key_pressed():
+    if User.quit_key_pressed():
             break
     
     if hands:
@@ -149,9 +153,9 @@ while True:
         cv2.imshow("ImageWhite",imgWhite)
 
         
-        Create_Printed_String(labels[index])     
+        User.Create_Printed_String(labels[index])     
 
-        if quit_key_pressed():
+        if User.quit_key_pressed():
             break
 
 
