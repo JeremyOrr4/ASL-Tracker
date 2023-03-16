@@ -5,7 +5,7 @@ import numpy as np
 import math
 import time
 from gtts import gTTS
-import os
+import vlc
 
 cap = cv2.VideoCapture(0)
 detector = HandDetector(maxHands=1) #max hands
@@ -24,7 +24,7 @@ letterList = []
 printedString = ""
 appenedPrintedString = ""
 StringMaxLength = 21
-CyclesToRegisterInput = 22
+CyclesToRegisterInput = 20
 
 CreatorText = "ASL to Speech & Text      Jeremy Orr"
 
@@ -51,7 +51,7 @@ class UserFunctions():
         if len(printedString) < StringMaxLength:
             letterList.append(labels[index])    
 
-            if char == "A" and letterList.count("A") > CyclesToRegisterInput:
+            if char == "Delete" and letterList.count("Delete") > CyclesToRegisterInput:
                 self.DeleteChar(True)
 
             if letterList.count(char) > CyclesToRegisterInput:
@@ -66,7 +66,7 @@ class UserFunctions():
         else:
             letterList.append(labels[index])     
 
-            if char == "A" and letterList.count("A") > CyclesToRegisterInput: 
+            if char == "Delete" and letterList.count("Delete") > CyclesToRegisterInput: 
                 self.DeleteChar(False)
 
             if letterList.count(char) > CyclesToRegisterInput:
@@ -87,6 +87,24 @@ class UserFunctions():
 
             appenedPrintedString = appenedPrintedString[:-1]
             letterList = []
+
+
+def WriteToFile(self):
+    with open("SignLanguageOutput.txt", mode="wt") as textFile:
+        textFile.write(printedString + appenedPrintedString)
+        printedString = ""
+        appenedPrintedString = ""
+        letterList = []
+
+def StringToSpeech(self):
+    outputAsText = gTTS(printedString + appenedPrintedString, lang='en',slow = False)
+    outputAsText.save("Sign_Language_Speech_Output.mp3")
+    player = vlc.MediaPlayer("Sign_Language_Speech_Output.mp3")
+    player.play()
+    printedString = ""
+    appenedPrintedString = ""
+    letterList = []
+
 
 #User Functions
 

@@ -20,3 +20,6 @@ MArch 12 2023
 Added delete
 
 Next Steps, create a variable that is the length of the first and second strings
+-Done
+
+Next steps is to create the wrtie to document file and to speech file.
