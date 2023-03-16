@@ -3,9 +3,10 @@ from cvzone.HandTrackingModule import HandDetector
 from cvzone.ClassificationModule import Classifier
 import numpy as np
 import math
-import time
 from gtts import gTTS
-import vlc
+from playsound import playsound
+import os
+
 
 cap = cv2.VideoCapture(0)
 detector = HandDetector(maxHands=1) #max hands
@@ -54,6 +55,12 @@ class UserFunctions():
             if char == "Delete" and letterList.count("Delete") > CyclesToRegisterInput:
                 self.DeleteChar(True)
 
+            if char == "Confirm_Speech" and letterList.count("Confirm_Speech") > CyclesToRegisterInput:
+                self.StringToSpeech()
+
+            if char == "Confirm_Text" and letterList.count("Confirm_Text") > CyclesToRegisterInput:
+                self.WriteToFile()
+
             if letterList.count(char) > CyclesToRegisterInput:
                 printedString = printedString + char
                 letterList = []
@@ -89,21 +96,24 @@ class UserFunctions():
             letterList = []
 
 
-def WriteToFile(self):
-    with open("SignLanguageOutput.txt", mode="wt") as textFile:
-        textFile.write(printedString + appenedPrintedString)
-        printedString = ""
-        appenedPrintedString = ""
-        letterList = []
+    def WriteToFile(self):
+        global letterList, printedString, appenedPrintedString
+        with open("Sign_Language_Output_Text.txt", mode="wt") as textFile:
+            textFile.write(printedString + appenedPrintedString)
+            printedString = ""
+            appenedPrintedString = ""
+            letterList = []
 
-def StringToSpeech(self):
-    outputAsText = gTTS(printedString + appenedPrintedString, lang='en',slow = False)
-    outputAsText.save("Sign_Language_Speech_Output.mp3")
-    player = vlc.MediaPlayer("Sign_Language_Speech_Output.mp3")
-    player.play()
-    printedString = ""
-    appenedPrintedString = ""
-    letterList = []
+    def StringToSpeech(self):
+        global letterList, printedString, appenedPrintedString
+        if len(printedString) != 0:
+            outputAsText = gTTS(printedString + appenedPrintedString, lang='en',slow = False)
+            outputAsText.save("Sign_Language_Output_Speech.mp3")
+            playsound('Sign_Language_Output_Speech.mp3')
+            os.remove("Sign_Language_Output_Speech.mp3")
+            printedString = ""
+            appenedPrintedString = ""
+            letterList = []
 
 
 #User Functions

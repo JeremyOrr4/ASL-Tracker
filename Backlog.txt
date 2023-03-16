@@ -1,3 +1,5 @@
+#playsound, mediapipe ,cvzone, tensorflow, playsound, gTTS, numpy
+
 March 11, 2023
 -added a quit key and my name to the bottom left. GOing to add a rectangle around my name.
 -created the name in the right palce
@@ -23,3 +25,5 @@ Next Steps, create a variable that is the length of the first and second strings
 -Done
 
 Next steps is to create the wrtie to document file and to speech file.
+-Done
+
