@@ -27,3 +27,11 @@ Next Steps, create a variable that is the length of the first and second strings
 Next steps is to create the wrtie to document file and to speech file.
 -Done
 
+Next make a standby method
+-Added standby
+
+NExt, it pauses when it plays a sound. Check out https://stackoverflow.com/questions/66095398/how-to-fix-opencv-video-freeze-few-second-when-sound-play
+-Maybe ignore this
+
+What I need to do is create my data set with words I want and spaces
+Planning stage

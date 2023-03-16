@@ -6,6 +6,7 @@ import math
 from gtts import gTTS
 from playsound import playsound
 import os
+import time
 
 
 cap = cv2.VideoCapture(0)
@@ -25,7 +26,7 @@ letterList = []
 printedString = ""
 appenedPrintedString = ""
 StringMaxLength = 21
-CyclesToRegisterInput = 20
+CyclesToRegisterInput = 2
 
 CreatorText = "ASL to Speech & Text      Jeremy Orr"
 
@@ -49,6 +50,7 @@ class UserFunctions():
     def Create_Printed_String(self,char):
         global letterList, printedString, appenedPrintedString
         
+       
         if len(printedString) < StringMaxLength:
             letterList.append(labels[index])    
 
@@ -68,13 +70,19 @@ class UserFunctions():
                 if len(printedString) == StringMaxLength:
                     LastCharOfPrintedString = printedString[-1]
                     appenedPrintedString = LastCharOfPrintedString      
-                
+                    
 
         else:
             letterList.append(labels[index])     
 
             if char == "Delete" and letterList.count("Delete") > CyclesToRegisterInput: 
                 self.DeleteChar(False)
+
+            if char == "Confirm_Speech" and letterList.count("Confirm_Speech") > CyclesToRegisterInput:
+                self.StringToSpeech()
+
+            if char == "Confirm_Text" and letterList.count("Confirm_Text") > CyclesToRegisterInput:
+                self.WriteToFile()
 
             if letterList.count(char) > CyclesToRegisterInput:
                 appenedPrintedString = appenedPrintedString + char
@@ -114,9 +122,6 @@ class UserFunctions():
             printedString = ""
             appenedPrintedString = ""
             letterList = []
-
-
-#User Functions
 
 User = UserFunctions()
 
@@ -180,8 +185,8 @@ while True:
         cv2.imshow("ImageCrop",imgCrop)
         cv2.imshow("ImageWhite",imgWhite)
 
-        
-        User.Create_Printed_String(labels[index])     
+        if (labels[index] != "Standby"):
+            User.Create_Printed_String(labels[index])     
 
         if User.quit_key_pressed():
             break
