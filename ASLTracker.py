@@ -10,11 +10,11 @@ import time
 
 
 cap = cv2.VideoCapture(0)
-detector = HandDetector(maxHands=1) #max hands
+detector = HandDetector(maxHands=1)
 classifier = Classifier("Model/keras_model.h5", "Model/labels.txt")
 
 
-offset = 20 #Create offset for smaller box
+offset = 20
 imgSize = 300
 
 labels = ["A","B","C"]
@@ -34,17 +34,13 @@ StringListIndex = 0
 
 CreatorText = "ASL to Speech & Text      Jeremy Orr"
 
-#Text to speech variables
-
 #User Functions
 class UserFunctions():
 
     #Quit Key
     def quit_key_pressed(self):
-        # Wait for a key press
         key = cv2.waitKey(1) & 0xFF
 
-        # If the "q" key was pressed, return True
         if key == ord('q'):
             return True
 
@@ -140,7 +136,6 @@ while True:
             else:
                 continue
 
-            #imgResize = cv2.resize(imgCrop,(wCal,imgSize))
             imgResizeShape = imgResize.shape
             wGap = math.ceil((300-wCal)/2)
             imgWhite[:, wGap:wCal+wGap] = imgResize #putting white as backgound
@@ -158,7 +153,6 @@ while True:
             else:
                 continue
 
-            #imgResize = cv2.resize(imgCrop,(imgSize,hCal))
             imgResizeShape = imgResize.shape
             hGap = math.ceil((imgSize-hCal)/2)
             imgWhite[hGap:hCal+hGap, :] = imgResize #putting white as backgound
@@ -166,7 +160,6 @@ while True:
             prediction, index = classifier.getPrediction(imgWhite, draw=True)
         
         cv2.putText(imgOutput, labels[index],(x+26,y-20), cv2.FONT_HERSHEY_DUPLEX,2,(0,0,255),2)
-        #cv2.rectangle(imgOutput,(x-offset,y-offset), (x+w+offset,y+h+offset), (255,0,255),4) rectangle around hand
 
         cv2.imshow("ImageCrop",imgCrop)
         cv2.imshow("ImageWhite",imgWhite)
@@ -184,18 +177,11 @@ while True:
 
     cv2.putText(imgOutput, CreatorText, (30, 30), cv2.FONT_HERSHEY_DUPLEX,0.9,(255,255,255),1) 
     
-    #Drawing output box
-    #Createing the Box for the output text
+    
     cv2.rectangle(imgOutput, (0,438), (750,600), (0,0,0), -1)
 
 
     cv2.putText(imgOutput, StringList[StringListIndex], (0, 475), cv2.FONT_HERSHEY_DUPLEX,1.5,(255,255,255),2)
-
-    # if len(printedString) < StringMaxLength:
-    #     cv2.putText(imgOutput, printedString, (0, 475), cv2.FONT_HERSHEY_DUPLEX,1.5,(255,255,255),2) 
-
-    # else:
-    #     cv2.putText(imgOutput, appenedPrintedString, (0, 475), cv2.FONT_HERSHEY_DUPLEX,1.5,(255,255,255),2) 
     
     cv2.imshow("Image",imgOutput) #Show new image without backend.
     cv2.waitKey(1)
