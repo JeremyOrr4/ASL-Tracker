@@ -53,7 +53,6 @@ class UserFunctions():
 
     def Create_Printed_String(self,char):
         global letterList, printedString, appenedPrintedString, StringList, StringListIndex
-        
 
         if len(StringList[StringListIndex]) < StringMaxLength:
             letterList.append(labels[index])    
@@ -61,10 +60,10 @@ class UserFunctions():
             if char == "A" and letterList.count("A") > CyclesToRegisterInput:
                 self.DeleteChar()
 
-            if char == "B" and letterList.count("B") > CyclesToRegisterInput:
+            if char == "TextToSpeech" and letterList.count("TextToSpeech") > CyclesToRegisterInput:
                 self.StringToSpeech()
 
-            if char == "TextToSPeech" and letterList.count("TextToSPeech") > CyclesToRegisterInput:
+            if char == "B" and letterList.count("B") > CyclesToRegisterInput:
                 self.WriteToFile()
 
             if letterList.count(char) > CyclesToRegisterInput:
@@ -75,50 +74,6 @@ class UserFunctions():
                     LastCharOfPrintedString = StringList[StringListIndex][-1]
                     StringListIndex = StringListIndex + 1
                     StringList[StringListIndex] = LastCharOfPrintedString
-
-    
-
-
-
-
-
-        # if len(printedString) < StringMaxLength:
-        #     letterList.append(labels[index])    
-
-        #     if char == "Delete" and letterList.count("Delete") > CyclesToRegisterInput:
-        #         self.DeleteChar(True)
-
-        #     if char == "Confirm_Speech" and letterList.count("Confirm_Speech") > CyclesToRegisterInput:
-        #         self.StringToSpeech()
-
-        #     if char == "Confirm_Text" and letterList.count("Confirm_Text") > CyclesToRegisterInput:
-        #         self.WriteToFile()
-
-        #     if letterList.count(char) > CyclesToRegisterInput:
-        #         printedString = printedString + char
-        #         letterList = []
-
-        #         if len(printedString) == StringMaxLength:
-        #             LastCharOfPrintedString = printedString[-1]
-        #             appenedPrintedString = LastCharOfPrintedString      
-                    
-
-        # else:
-        #     letterList.append(labels[index])     
-
-        #     if char == "Delete" and letterList.count("Delete") > CyclesToRegisterInput: 
-        #         self.DeleteChar(False)
-
-        #     if char == "Confirm_Speech" and letterList.count("Confirm_Speech") > CyclesToRegisterInput:
-        #         self.StringToSpeech()
-
-        #     if char == "Confirm_Text" and letterList.count("Confirm_Text") > CyclesToRegisterInput:
-        #         self.WriteToFile()
-
-        #     if letterList.count(char) > CyclesToRegisterInput:
-        #         appenedPrintedString = appenedPrintedString + char
-        #         letterList = [] 
-
 
     def DeleteChar(self):
         global letterList, printedString, appenedPrintedString, StringList, StringListIndex
@@ -135,7 +90,7 @@ class UserFunctions():
         global letterList, printedString, appenedPrintedString, StringList, StringListIndex, n
 
         with open("Sign_Language_Output_Text.txt", mode="wt") as textFile:
-            FinalOutput = ' '.join(StringList)
+            FinalOutput = ''.join(StringList)
 
             textFile.write(FinalOutput)
             StringList = ['' for i in range(n)]
@@ -145,7 +100,7 @@ class UserFunctions():
     def StringToSpeech(self):
         global letterList, printedString, appenedPrintedString, StringList, StringListIndex, n
 
-        FinalOutput = ' '.join(StringList)
+        FinalOutput = ''.join(StringList)
         outputAsText = gTTS(FinalOutput, lang='en',slow = False)
         outputAsText.save("Sign_Language_Output_Speech.mp3")
         playsound('Sign_Language_Output_Speech.mp3')
