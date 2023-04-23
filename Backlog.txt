@@ -35,3 +35,10 @@ NExt, it pauses when it plays a sound. Check out https://stackoverflow.com/quest
 
 What I need to do is create my data set with words I want and spaces
 Planning stage
+
+What I should do is really OOP it. 
+-Add a class that has the needed user stuff all your global vairbaels can go inside a class don't need to be global.
+-Add the main function call man.
+-Figure out the differnt hand gestures for everything
+-
+
