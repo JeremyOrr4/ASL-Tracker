@@ -16,7 +16,7 @@ Copyright Jeremy Orr
 ### Setup
 
 - Clone the repoistory to your folder. <br />
-- You will need some API's that are too large to be put onto github. Make sure you create your virtual envourment, have pip installed and the latest python verison installed. Make sure you're in the virutal envoirment and it is active (Clicking run with VSCode does the trick). <br />
+- You will need some API's with a VE that is too large to be put onto github. Make sure you create your virtual envourment, have pip installed and the latest python verison installed. Make sure you're in the virutal envoirment and it is active (Clicking run with VSCode does the trick). <br />
 Next type in these pip install commands in the terminal that is located in your projects directory. <br />
 
 ```
