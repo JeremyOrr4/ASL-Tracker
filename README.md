@@ -3,7 +3,7 @@
 Copyright Jeremy Orr
 
 ## Example Picture and Video link
-
+![user_picture](User_Tracker_pic.png)
 ## Installation
 
 ### Prerequisites:
