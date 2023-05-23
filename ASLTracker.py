@@ -7,17 +7,19 @@ from gtts import gTTS
 from playsound import playsound
 import os
 import time
+import re
 
 
 cap = cv2.VideoCapture(0)
 detector = HandDetector(maxHands=1)
 classifier = Classifier("Model/keras_model.h5", "Model/labels.txt")
 
-
 offset = 20
-imgSize = 300
+imgSize = 302
 
-labels = ["A","B","C"]
+labels = ["A","B","C","Confirm_Speech","Confirm_Text","D","Delete",
+          "E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S",
+          "Space","Standby","T","U","V","W","X","Y","Z"]
 
 #for printing the input text
 global StringMaxLength, CyclesToRegisterInput
@@ -26,10 +28,10 @@ letterList = []
 printedString = ""
 appenedPrintedString = ""
 StringMaxLength = 21
-CyclesToRegisterInput = 1
+CyclesToRegisterInput = 20
 
-n = 10
-StringList = ['' for i in range(n)]
+numberOfLists = 10
+StringList = ['' for i in range(numberOfLists)]
 StringListIndex = 0
 
 CreatorText = "ASL to Speech & Text      Jeremy Orr"
@@ -50,21 +52,26 @@ class UserFunctions():
     def Create_Printed_String(self,char):
         global letterList, printedString, appenedPrintedString, StringList, StringListIndex
 
-        if len(StringList[StringListIndex]) < StringMaxLength:
+        if len(StringList[StringListIndex]) < StringMaxLength: #Maybe take this out.
             letterList.append(labels[index])    
 
-            if char == "A" and letterList.count("A") > CyclesToRegisterInput:
+            if char == "Delete" and letterList.count("Delete") > CyclesToRegisterInput:
                 self.DeleteChar()
 
-            if char == "TextToSpeech" and letterList.count("TextToSpeech") > CyclesToRegisterInput:
+            if char == "Confirm_Speech" and letterList.count("Confirm_Speech") > CyclesToRegisterInput:
                 self.StringToSpeech()
 
-            if char == "B" and letterList.count("B") > CyclesToRegisterInput:
+            if char == "Confirm_Text" and letterList.count("Confirm_Text") > CyclesToRegisterInput:
                 self.WriteToFile()
 
             if letterList.count(char) > CyclesToRegisterInput:
-                StringList[StringListIndex] = StringList[StringListIndex] + char
-                letterList = []
+                
+                if char != "Space":
+                    StringList[StringListIndex] = StringList[StringListIndex] + char
+                    letterList = []
+                else:
+                    StringList[StringListIndex] = StringList[StringListIndex] + " "
+                    letterList = []
 
                 if len(StringList[StringListIndex]) == StringMaxLength:
                     LastCharOfPrintedString = StringList[StringListIndex][-1]
@@ -83,27 +90,33 @@ class UserFunctions():
 
         
     def WriteToFile(self):
-        global letterList, printedString, appenedPrintedString, StringList, StringListIndex, n
+        global letterList, printedString, appenedPrintedString, StringList, StringListIndex, numberOfLists
 
         with open("Sign_Language_Output_Text.txt", mode="wt") as textFile:
             FinalOutput = ''.join(StringList)
 
             textFile.write(FinalOutput)
-            StringList = ['' for i in range(n)]
+            StringList = ['' for i in range(numberOfLists)]
             letterList = []
             StringListIndex = 0
 
     def StringToSpeech(self):
-        global letterList, printedString, appenedPrintedString, StringList, StringListIndex, n
+        global letterList, printedString, appenedPrintedString, StringList, StringListIndex, numberOfLists
 
-        FinalOutput = ''.join(StringList)
-        outputAsText = gTTS(FinalOutput, lang='en',slow = False)
-        outputAsText.save("Sign_Language_Output_Speech.mp3")
-        playsound('Sign_Language_Output_Speech.mp3')
-        os.remove("Sign_Language_Output_Speech.mp3")
-        StringList = ['' for i in range(n)]
-        letterList = []
-        StringListIndex = 0
+        if StringList[0] != r"^\s*$":
+            FinalOutput = ''.join(StringList)
+            outputAsText = gTTS(FinalOutput, lang='en',slow = False)
+            outputAsText.save("Sign_Language_Output_Speech.mp3")
+            playsound('Sign_Language_Output_Speech.mp3')
+            os.remove("Sign_Language_Output_Speech.mp3")
+            StringList = ['' for i in range(numberOfLists)]
+            letterList = []
+            StringListIndex = 0
+
+        else:
+            StringList = ['' for i in range(numberOfLists)]
+            letterList = []
+            StringListIndex = 0
 
 User = UserFunctions()
 
@@ -137,7 +150,7 @@ while True:
                 continue
 
             imgResizeShape = imgResize.shape
-            wGap = math.ceil((300-wCal)/2)
+            wGap = math.ceil((302-wCal)/2)
             imgWhite[:, wGap:wCal+wGap] = imgResize #putting white as backgound
             
             prediction, index = classifier.getPrediction(imgWhite, draw=True)
@@ -171,16 +184,11 @@ while True:
             break
 
 
-
-    #Top section
     cv2.rectangle(imgOutput, (0,0), (750,40), (0,0,0), -1)
 
     cv2.putText(imgOutput, CreatorText, (30, 30), cv2.FONT_HERSHEY_DUPLEX,0.9,(255,255,255),1) 
     
-    
     cv2.rectangle(imgOutput, (0,438), (750,600), (0,0,0), -1)
-
-
     cv2.putText(imgOutput, StringList[StringListIndex], (0, 475), cv2.FONT_HERSHEY_DUPLEX,1.5,(255,255,255),2)
     
     cv2.imshow("Image",imgOutput) #Show new image without backend.
