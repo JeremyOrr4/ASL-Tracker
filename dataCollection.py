@@ -13,7 +13,7 @@ detector = HandDetector(maxHands=1) #max hands
 offset = 20 #Create offset for smaller box
 imgSize = 300
 
-folder="Data/C"
+folder="Data/Confirm_Text"
 counter = 0
 
 
